@@ -1,79 +1,78 @@
-# Laravel 4 w/ Vagrant
+# Laravel 4 Vagrant 开发包
 
-A basic Ubuntu 12.04 Vagrant setup with [Laravel4](http://laravel.com/docs) and PHP 5.4.
+一个基于Ubuntu 12.04、PHP 5.4用于开发[Laravel4](http://laravel.com/docs) 的Vagrant包。
 
-## Requirements
+## 必要环境
 
-* VirtualBox - Free virtualization software [Downloads](https://www.virtualbox.org/wiki/Downloads)
-* Vagrant - Tool for working with virtualbox images [Vagrant Home](https://www.vagrantup.com), click on 'download now link'
-* Git - Source Control Management [Downloads](http://git-scm.com/downloads)
+* VirtualBox - 免费的虚拟机 [Downloads](https://www.virtualbox.org/wiki/Downloads)
+* Vagrant - 快速,便携式,动态配置的虚拟机工具 ，[Vagrant Home](https://www.vagrantup.com) 点击 'download now link'
+* Git - 版本控制 [Downloads](http://git-scm.com/downloads)
 
-## Setup
+## 安装
 
+* 复制版本  `git clone https://github.com/huanghua581/Laravel4-Vagrant.git`
+* 在 `Laravel4-Vagrant` 文件夹运行 `vagrant up` 
+* （在您第一次运行它需要下载虚拟机镜像，大约300MB。根据你的下载速度这可能需要一些时间！）
+* 在第一运行的时候，Vagrant 会根据 puppet 配置文件配置系统，这也需要一些时间。
+* 当安装成功时， 打开浏览器浏览 http://localhost:8888 
 
-* Clone this repository `git clone http://github.com/bryannielsen/Laravel4-Vagrant.git`
-* run `vagrant up` inside the newly created directory
-* (the first time you run vagrant it will need to fetch the virtual box image which is ~300mb so depending on your download speed this could take some time)
-* Vagrant will then use puppet to provision the base virtual box with our LAMP stack (this could take a few minutes) also note that composer will need to fetch all of the packages defined in the app's composer.json which will add some more time to the first provisioning run
-* You can verify that everything was successful by opening http://localhost:8888 in a browser
+*注意: 你可能需要更改 www/app/storage 文件夹权限为 777 在你的主机系统上* 
 
-*Note: You may have to change permissions on the www/app/storage folder to 777 under the host OS* 
+例如: `chmod -R 777 www/app/storage/`
 
-For example: `chmod -R 777 www/app/storage/`
+## 使用
 
-## Usage
+一些基本的配置参数
 
-Some basic information on interacting with the vagrant box
-
-### Port Forwards
+### 端口
 
 * 8888 - Apache
 * 8889 - MySQL 
 * 5433 - PostgreSQL
 
 
-### Default MySQL/PostgreSQL Database
+### MySQL/PostgreSQL 默认配置
 
 * User: root
-* Password: (blank)
+* Password: (blank) [空]
 * DB Name: database
 
 
 ### PHPmyAdmin
 
-Accessible at http://localhost:8888/phpmyadmin using MySQL access credentials above.
+访问：http://localhost:8888/phpmyadmin
 
 ### PHP XDebug
 
-XDebug is included in the build but **disabled by default** because of the effect it can have on performance.  
+XDebug 已经安装，但是 **默认没有开启**， 因为开启影响性能。
 
-To enable XDebug:
+开启 XDebug:
 
-1. Set the variable `$use_xdebug = "1"` at the beginning of `puppet/manifests/phpbase.pp`
-2. Then you will need to provision the box either with `vagrant up` or by running the command `vagrant provision` if the box is already up
-3. Now you can connect to XDebug on **port 9001**
+1. 启动之前设置参数 `puppet/manifests/phpbase.pp` 添加 `$use_xdebug = "1"` ；
+2. 然后启动 `vagrant up` 或者在虚拟机运行的时候执行 `vagrant provision` ；
+3. 这样你就可以用 XDebug 调试了 ， **默认端口 9001** 。
 
-**XDebug Tools**
+**XDebug 工具**
 
-* [SublimeXDebug](https://github.com/Kindari/SublimeXdebug) - Free, SublimeText plugin
-* [MacGDBP](http://www.bluestatic.org/software/macgdbp/) - Free, Mac OSX
-* [Codebug](http://www.codebugapp.com/) - Paid, Mac OSX
+* [SublimeXDebug](https://github.com/Kindari/SublimeXdebug) - 免费, SublimeText 插件
+* [MacGDBP](http://www.bluestatic.org/software/macgdbp/) - 免费, Mac OSX
+* [Codebug](http://www.codebugapp.com/) - 收费, Mac OSX
 
 
-_Note: All XDebug settings can be configured in the php.ini template at `puppet/modules/php/templates/php.ini.erb`_
-
+_注意: 所有 XDebug 配置信息都可以在 PHP.ini 模板文件修改 `puppet/modules/php/templates/php.ini.erb`_
 
 ### Vagrant
 
-Vagrant is [very well documented](http://vagrantup.com/v1/docs/index.html) but here are a few common commands:
+Vagrant [在线文档](http://vagrantup.com/v1/docs/index.html)  
+一些常用命令 : 
 
-* `vagrant up` starts the virtual machine and provisions it
-* `vagrant suspend` will essentially put the machine to 'sleep' with `vagrant resume` waking it back up
-* `vagrant halt` attempts a graceful shutdown of the machine and will need to be brought back with `vagrant up`
-* `vagrant ssh` gives you shell access to the virtual machine
+* `vagrant up` 开机和配置虚拟机
+* `vagrant suspend` 虚拟机睡眠，可以用 `vagrant resume` 唤醒
+* `vagrant halt` 关闭虚拟机
+* `vagrant ssh`  进入虚拟机shell环境
 
 ----
-##### Virtual Machine Specifications #####
+##### 虚拟机软件列表 #####
 
 * OS     - Ubuntu 12.04
 * Apache - 2.2.22
